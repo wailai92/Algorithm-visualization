@@ -21,5 +21,5 @@ class Algorithm_manager():
         for file_name in os.listdir(self.graph_dir):
             full_path = os.path.join(self.graph_dir, file_name)
             if os.path.isfile(full_path) and file_name.endswith(".py"):
-                results.append(os.path.split(file_name)[0])
+                results.append(os.path.splitext(file_name)[0])
         return results

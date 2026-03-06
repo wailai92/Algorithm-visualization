@@ -1,49 +1,57 @@
 import pygame
 import os
-
+from ui.component.button import Button
 
 class Main_page():
-    def __init__(self):
-        pygame.init()
+    def __init__(self, page_manager):
         self.font = pygame.font.SysFont(None, 36)
-        self.screen_height = 600
-        self.screen_width = 900
-        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-        self.screen.fill("silver")
+        self.next_page = None
+        self.page_manager = page_manager
+    def draw(self, screen):
+        screen.fill("silver")
+        self.sort_button_center = (int(screen.get_width() / 2), int(screen.get_height() / 3))
+        self.sort_button_size = (110, 30)
+        self.graph_button_center = (int(screen.get_width() / 2), int(screen.get_height() / 2))
+        self.graph_button_size = (130, 30)
+        self.setting_button_center = (int(screen.get_width() / 2), int(2 * screen.get_height() / 3))
+        self.setting_button_size = (100, 30)
         
-        #self.create_button((int(self.screen_width/2), int(self.screen_height/2), 90, 60), text="sort_algo")
-        self.sort_button_center = (int(self.screen_width/2), int(self.screen_height/2))
-        self.sort_button_size = (90, 60)
-        
-        self.run = True
-        self.clock = pygame.time.Clock()
-        while self.run:
-            self.mouse_pos = pygame.mouse.get_pos()
-            if hasattr(self, "sort_button") and self.sort_button.rect.collidepoint(self.mouse_pos):
-                color = (30, 144, 255) #dodgerblue
-            else:
-                color = (255, 255, 255) #white
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.quit()
+        self.mouse_pos = pygame.mouse.get_pos()
+        if hasattr(self, "sort_button") and self.sort_button.rect.collidepoint(self.mouse_pos):
+            sort_color = (30, 144, 255) #dodgerblue
+        else:
+            sort_color = (255, 255, 255) #white
+        if hasattr(self, "graph_button") and self.graph_button.rect.collidepoint(self.mouse_pos):
+            graph_color = (30, 144, 255) #dodgerblue
+        else:
+            graph_color = (255, 255, 255) #white
+        if hasattr(self, "setting_button") and self.setting_button.rect.collidepoint(self.mouse_pos):
+            setting_color = (30, 144, 255) #dodgerblue
+        else:
+            setting_color = (255, 255, 255) #white
+                    
+        self.sort_button = Button(screen, self.font, sort_color,
+                                    self.sort_button_center, 
+                                    self.sort_button_size, 
+                                    text = "sort algo")
             
-            self.sort_button = Button(self.screen, self.font, color,
-                                      self.sort_button_center, 
-                                      self.sort_button_size, 
-                                      text = "sort algo")
-            self.clock.tick(30)
-            pygame.display.update()
-    def quit(self):
-        self.run = False
+        self.graph_button = Button(screen, self.font, graph_color,
+                                    self.graph_button_center,
+                                    self.graph_button_size,
+                                    text = "graph algo")
         
-class Button():
-    def __init__(self, screen, font, word_color, pos, size, color = "silver", text = "button"):
-        width, height = size
-        self.rect = pygame.Rect(0, 0, width, height)
-        self.rect.center = pos
-        pygame.draw.rect(screen, color, self.rect)
-        word = font.render(text, True, word_color)
-        word_rect = word.get_rect(center = self.rect.center)
-        screen.blit(word, word_rect)
+        self.setting_button = Button(screen, self.font, setting_color,
+                                        self.setting_button_center, 
+                                        self.setting_button_size, 
+                                        text = "setting")
+    def handle_event(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.sort_button.rect.collidepoint(event.pos):
+                self.next_page = self.page_manager.switch_page("sort")
+            elif self.graph_button.rect.collidepoint(event.pos):
+                self.next_page = self.page_manager.switch_page("graph")
+            elif self.setting_button.rect.collidepoint(event.pos):
+                self.next_page = self.page_manager.switch_page("setting")
+        
         
                 

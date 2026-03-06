@@ -8,7 +8,7 @@ class Main_page():
         self.next_page = None
         self.page_manager = page_manager
     def draw(self, screen):
-        screen.fill("silver")
+        screen.fill("black")
         self.sort_button_center = (int(screen.get_width() / 2), int(screen.get_height() / 3))
         self.sort_button_size = (110, 30)
         self.graph_button_center = (int(screen.get_width() / 2), int(screen.get_height() / 2))

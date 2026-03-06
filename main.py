@@ -1,5 +1,4 @@
 from ui.main_page import Main_page
-from ui.sort_page import Sort_page
 from ui.page_manager import Page_manager
 import sys
 import pygame

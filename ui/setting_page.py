@@ -8,7 +8,7 @@ class Setting_page():
         self.next_page = None
         self.page_manager = page_manager
     def draw(self, screen):
-        screen.fill("silver")
+        screen.fill("black")
         self.back_button_center = (40, 20)
         self.back_button_size = (50, 30)
         self.mouse_pos = pygame.mouse.get_pos()

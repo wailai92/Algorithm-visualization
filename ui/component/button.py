@@ -1,11 +1,18 @@
 import pygame
 
 class Button():
-    def __init__(self, screen, font, word_color, pos, size, color = "silver", text = "button"):
+    def __init__(self, screen, font, word_color, pos, size, color="black", text="button", center=True):
         width, height = size
-        self.rect = pygame.Rect(0, 0, width, height)
-        self.rect.center = pos
+        x, y = pos
+
+        if center:
+            self.rect = pygame.Rect(0, 0, width, height)
+            self.rect.center = pos
+        else:
+            self.rect = pygame.Rect(x, y, width, height)
+
         pygame.draw.rect(screen, color, self.rect)
+
         word = font.render(text, True, word_color)
-        word_rect = word.get_rect(center = self.rect.center)
+        word_rect = word.get_rect(midleft=(self.rect.x + 10, self.rect.centery))
         screen.blit(word, word_rect)

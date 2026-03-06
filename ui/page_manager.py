@@ -1,4 +1,3 @@
-from ui.component.button import Button
 from ui.main_page import Main_page
 from ui.sort_page import Sort_page
 from ui.graph_page import Graph_page

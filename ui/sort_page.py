@@ -4,6 +4,7 @@ from ui.component.button import Button
 from ui.component.button_list import Button_list
 from core.algorithm_manager import Algorithm_manager
 from core.path_manager import Path_manager
+from ui.visualizer.sorting_visualizer import Sorting_visualizer
 
 class Sort_page():
     def __init__(self, page_manager):
@@ -12,6 +13,11 @@ class Sort_page():
         self.page_manager = page_manager
         self.path_manager = Path_manager()
         self.algorithm_manager = Algorithm_manager(self.path_manager)
+        self.sorting_visualizer = Sorting_visualizer()
+        self.chosen_algo_name = ""
+        self.chosen_algo = None
+        self.if_init_visualizer = False
+        
     def draw(self, screen):
         width, height = screen.get_size()
         left_width = 250
@@ -34,7 +40,7 @@ class Sort_page():
         #self.back_button_center = (40, 20)
         self.back_button_size = (250, 35)
         
-        self.sort_algo = self.algorithm_manager.get_sort_algo()
+        self.sort_algo = self.algorithm_manager.get_sort_algo_name()
         self.algo_button_list_size = (left_width, 30)
         self.algo_button_list_color = []
         
@@ -56,7 +62,20 @@ class Sort_page():
                                             (0, 40), self.algo_button_list_size,
                                             (40, 40, 40), self.font,
                                             self.algo_button_list_color)
+        
+        if self.if_init_visualizer:
+            self.if_init_visualizer = False
+            self.sorting_visualizer.init(self.chosen_algo, 100, screen, top_right_rect, bottom_right_rect)
+        if self.chosen_algo:
+            self.sorting_visualizer.draw()
+        
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.back_button.rect.collidepoint(event.pos):
                 self.next_page = self.page_manager.switch_page("main")
+                return
+            for button in self.algo_button_list.button:
+                if button.rect.collidepoint(event.pos):
+                    self.chosen_algo_name = button.name
+                    self.chosen_algo = self.algorithm_manager.get_algo("sort", button.name)
+                    self.if_init_visualizer = True

@@ -4,6 +4,7 @@ class Button():
     def __init__(self, screen, font, word_color, pos, size, color="black", text="button", center=True):
         width, height = size
         x, y = pos
+        self.name = text
 
         if center:
             self.rect = pygame.Rect(0, 0, width, height)

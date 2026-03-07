@@ -34,7 +34,7 @@ class Graph_page():
         #self.back_button_center = (40, 20)
         self.back_button_size = (250, 35)
         
-        self.graph_algo = self.algorithm_manager.get_graph_algo()
+        self.graph_algo = self.algorithm_manager.get_graph_algo_name()
         self.algo_button_list_size = (left_width, 30)
         self.algo_button_list_color = []
         

@@ -11,6 +11,8 @@ class Sorting_visualizer():
         self.screen = None
         self.chart_surface = None #screen.subsurface(top_rect)
         self.operation_surface = None #screen.subsurface(bottom_rect)
+        self.step_delay = 30
+        self.last_step_time = 0
         #self.finished = True
     def status_decode(self, status):
         if status["type"] == "compare":
@@ -19,16 +21,17 @@ class Sorting_visualizer():
         elif status["type"] == "swap":
             i = status["first"]
             j = status["second"]
-            self.data_list[i], self.data_list[j] = self.data_list[j], self.data_list[i]
+            #self.status_decode(next(self.generator))
+            #self.data_list[i], self.data_list[j] = self.data_list[j], self.data_list[i]
         elif status["type"] == "finished_cut":
-            self.color_list[self.data_length - status["index"]] = (0, 0, 0) #black
+            self.color_list[self.data_length - status["index"] - 1] = "magenta" #black
             self.status_decode(next(self.generator))
         elif status["type"] == "early_finished" :
-            self.color_list = [(192, 192, 192) for _ in range(self.data_length)]
+            self.color_list = ["magenta" for _ in range(self.data_length)]
             self.pause = True
             #self.finished = True
         elif status["type"] == "finished":
-            self.color_list = [(192, 192, 192) for _ in range(self.data_length)]
+            self.color_list = ["magenta" for _ in range(self.data_length)]
             self.pause = True
             #self.finished = True
             
@@ -62,12 +65,18 @@ class Sorting_visualizer():
         bottom_height = self.operation_surface.get_height()   
         #operation button set...
         
+        self.reset_active_color()
         if not self.pause:
             try:
                 status = next(self.generator)
                 self.status_decode(status)
             except StopIteration:
                 self.pause = True
+
+    def reset_active_color(self):
+        for i in range(self.data_length):
+            if self.color_list[i] != "magenta": 
+                self.color_list[i] = (0, 150, 255)
         
     def set_data_length(self, length):
         self.data_length = length
@@ -94,7 +103,7 @@ class Sorting_visualizer():
         self.set_generator(algo_function)
         self.set_screen(screen, top_rect, bottom_rect)
         self.set_pause()
-        self.finished = False
+        self.pause = False
     def inverse_pause(self):
         self.pause = not self.pause
         

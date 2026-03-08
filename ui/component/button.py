@@ -1,7 +1,7 @@
 import pygame
 
 class Button():
-    def __init__(self, screen, font, word_color, pos, size, color="black", text="button", center=True):
+    def __init__(self, screen, font, word_color = (255, 255, 255), pos = (0, 0), size = (0, 0), color="black", text="button", center=True):
         width, height = size
         x, y = pos
         self.name = text
